@@ -31,6 +31,6 @@ fi
 # personal email out of public history. Check before the first commit.
 if [ -z "$(git config --local user.email 2>/dev/null || true)" ]; then
   echo "NOTE: set the repo-local Git identity before committing:"
-  echo "  git config user.name  'Saber Hosseinzade'"
-  echo "  git config user.email '<id>+Saber-Hosseinzade@users.noreply.github.com'"
+  echo "  git config user.name  '<your name>'"
+  echo "  git config user.email '<id>+<username>@users.noreply.github.com'"
 fi

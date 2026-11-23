@@ -14,7 +14,8 @@
     // Claude Code CLI + the VS Code extension (the feature adds both)
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": { }
   },
-  "initializeCommand": "mkdir -p \"$HOME/.claude-projects/${localWorkspaceFolderBasename}\"",
+  // Runs on the host before the build: the mounted folders must exist, or the container won't start.
+  "initializeCommand": "mkdir -p \"$HOME/.aws-sandbox\" \"$HOME/.claude-projects/${localWorkspaceFolderBasename}\"",
   "mounts": [
     // A dedicated AWS config folder on the host, not ~/.aws.
     // Only these credentials are visible inside the container.
