@@ -17,6 +17,8 @@ repos:
       - id: check-added-large-files
         args: [--maxkb=1000]
       - id: check-merge-conflict
+      # Scripts with a shebang must be executable in Git (hooks and evals fail otherwise).
+      - id: check-shebang-scripts-are-executable
       - id: mixed-line-ending
         args: [--fix=lf]
 
