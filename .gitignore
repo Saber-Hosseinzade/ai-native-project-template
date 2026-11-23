@@ -39,3 +39,4 @@ data/
 # Claude Code: personal notes and settings stay local
 CLAUDE.local.md
 .claude/settings.local.json
+.claude/worktrees/

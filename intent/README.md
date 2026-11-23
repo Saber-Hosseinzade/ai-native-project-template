@@ -12,9 +12,11 @@ One folder per change, named `YYYY-MM-DD-short-name/`; the spec sits next to its
 intent/
   _template.md          intent template
   _spec-template.md     spec template
+  _plan-template.md     plan template
   2026-11-23-example-change/
     intent.md
     spec.md
+    plan.md
 ```
 
 ## Plan: intent
@@ -35,6 +37,19 @@ intent/
    unmeasured risk, and who decides it.
 4. Commit on a branch `spec/<short-name>`. **Merged = accepted** into build.
 
+## Build: plan, then code
+
+1. Start Claude Code (plan mode is the default) and ask for an implementation plan from the spec:
+   files that change, order of work, risks, and the tests that prove each requirement.
+2. Question it: what could break, which step is riskiest, what options were dropped. Iterate until
+   someone who never saw the conversation could implement it from the plan alone.
+3. Commit the accepted plan as `plan.md` on the change's branch, then let Claude implement.
+4. If the code departs from the plan, update `plan.md` in the same commit.
+5. The `verifier` subagent checks the diff against the plan before the PR.
+
+Independent tasks can run in parallel sessions, each in its own worktree:
+`claude --worktree <task-name>`. Start with two or three; add more only while review keeps up.
+
 ## Measure
 
 - Time from the first conversation to the committed `intent.md` (Git history).
@@ -42,3 +57,5 @@ intent/
 - Edits to an `intent.md` after its `spec.md` was first committed: fewer means clearer intent.
 - Time from the `intent.md` commit to the `spec.md` commit.
 - Edits to a `spec.md` after build starts: requirements rework.
+- Share of changes merged after the first implementation pass; how often the merged diff matches
+  `plan.md`.
