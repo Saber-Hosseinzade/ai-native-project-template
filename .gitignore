@@ -38,6 +38,7 @@ data/
 
 # Claude Code: personal notes and settings stay local
 CLAUDE.local.md
+PROJECT_CONTEXT.md
 .claude/settings.local.json
 .claude/worktrees/
 .claude/tests-locked

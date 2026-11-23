@@ -76,6 +76,17 @@ The Claude secret is either `CLAUDE_CODE_OAUTH_TOKEN` (a Claude subscription, cr
 
 Add dependencies with `uv add <package>`. `make help` lists every command.
 
+### Personal Claude notes (optional)
+
+Put files in `~/.claude-base/` on the host to share them across projects. The dev container mounts the
+folder read-only and, on first open of a project:
+
+- imports `~/.claude-base/CLAUDE.md` as your user-level Claude instructions (one file for every project);
+- copies `~/.claude-base/CLAUDE.local.md` and `~/.claude-base/PROJECT_CONTEXT.md` into the project if
+  they don't exist yet. Both are git-ignored.
+
+With an empty folder, nothing happens.
+
 ## Limitations
 
 - Claude runs in CI use your subscription's limits or API credit.
