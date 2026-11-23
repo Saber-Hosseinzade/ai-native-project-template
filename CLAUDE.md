@@ -1,6 +1,10 @@
 # CLAUDE.md
 
-Context for AI coding assistants. Private notes go in `CLAUDE.local.md` (git-ignored).
+Context for AI coding assistants.
+
+- Project record (local, git-ignored; created from `PROJECT_CONTEXT.template.md`): @PROJECT_CONTEXT.md
+- Private notes for this project go in `CLAUDE.local.md` (git-ignored). Create it when there is
+  something private to note, such as a client name or a dataset's licence terms.
 
 ## What this is
 
@@ -56,7 +60,7 @@ subscription with its own charges.
   step without asking.
 - Docs describe what the project does and how to use it. No personal details (people, employers,
   machines, account IDs) in tracked files; private notes go in the git-ignored local files.
-- Keep `PROJECT_CONTEXT.md` (git-ignored) current when a step finishes, a decision is made or a session
+- Keep `PROJECT_CONTEXT.md` current when a step finishes, a decision is made or a session
   ends: date, status, next step. Write it to be read without the code or the chat.
 - Say what was measured and what was assumed. PR descriptions state what changed and how it was
   measured; add each measured result, dated, to Results in `PROJECT_CONTEXT.md`. Docs claim only

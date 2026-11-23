@@ -78,9 +78,9 @@ Add dependencies with `uv add <package>`. `make help` lists every command.
 
 ### Local Claude files
 
-On first open, the dev container creates two git-ignored files from their committed templates:
-`CLAUDE.local.md` (private notes for this project) and `PROJECT_CONTEXT.md` (a status record that imports
-into Claude's context). Existing files are never overwritten.
+On first open, the dev container creates `PROJECT_CONTEXT.md` from its template: a git-ignored status
+record that `CLAUDE.md` imports into every session. An existing file is never overwritten. Private notes
+for a project go in `CLAUDE.local.md`, also git-ignored, created when needed.
 
 ## Limitations
 
