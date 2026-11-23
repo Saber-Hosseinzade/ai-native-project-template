@@ -76,15 +76,11 @@ The Claude secret is either `CLAUDE_CODE_OAUTH_TOKEN` (a Claude subscription, cr
 
 Add dependencies with `uv add <package>`. `make help` lists every command.
 
-### Personal Claude notes (optional)
+### Local Claude files
 
 On first open, the dev container creates two git-ignored files from their committed templates:
 `CLAUDE.local.md` (private notes for this project) and `PROJECT_CONTEXT.md` (a status record that imports
 into Claude's context). Existing files are never overwritten.
-
-For rules you want in every project, write `~/.claude-base/CLAUDE.md` on the host. The folder is mounted
-read-only and imported as your user-level Claude instructions; keep it in a private repository to back
-it up. With no such file, nothing is imported.
 
 ## Limitations
 

@@ -3,6 +3,7 @@
 # or denies with the route to approval. Non-interactive runs (CI, evals) treat "ask" as deny.
 #   - Edits to the agent's own guardrails and CI: ask.
 #   - git commit/merge/rebase on main: deny (one branch per change).
+#   - git commit without a GitHub noreply user.email: deny.
 #   - New or removed dependencies: ask (security-policy S12).
 #   - AWS: any profile other than sandbox or region other than eu-central-1: deny;
 #     commands that change resources: ask.
@@ -42,6 +43,14 @@ case "$tool" in
       ! [[ "$cmd" =~ git[[:space:]]+(switch[[:space:]]+-c|checkout[[:space:]]+-b) ]] &&
       [ "$(git -C "$root" branch --show-current 2>/dev/null)" = "main" ]; then
       decide deny "Commits go on a branch, not main (CLAUDE.md: one branch per change). Run git switch -c <name> first."
+    fi
+
+    # Public history: commits use a GitHub noreply address, never a personal one.
+    if [[ "$cmd" =~ (^|[;&|[:space:]])git[[:space:]]+commit([[:space:]]|$) ]]; then
+      email=$(git -C "$root" config user.email 2>/dev/null || true)
+      if [[ "$email" != *@users.noreply.github.com ]]; then
+        decide deny "Commits must use a GitHub noreply address (now: ${email:-unset}). Run git config user.email '<id>+<username>@users.noreply.github.com' first."
+      fi
     fi
 
     # Dependencies: check against security-policy S12 before adding.

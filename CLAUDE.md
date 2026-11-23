@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Context for AI coding assistants. Personal notes go in `CLAUDE.local.md` (git-ignored).
+Context for AI coding assistants. Private notes go in `CLAUDE.local.md` (git-ignored).
 
 ## What this is
 
@@ -13,8 +13,8 @@ A Python 3.12 project for AI agents, RAG or document AI on AWS. Code in `src/app
 - `make typecheck`: "Success: no issues found"
 - `make test`: "N passed", nothing failed or skipped
 
-Run all three before reporting any task complete, and paste the output. If a test fails, fix the code,
-not the test; never skip or delete a failing test. Other commands: `make fmt`, `make db-up`, `make help`.
+Run all three before reporting any task or commit done, and paste the output. If a test fails, fix the
+code, not the test; never skip or delete one. Tests stay offline. `make help` lists other commands.
 
 ## Design rules
 
@@ -29,33 +29,38 @@ not the test; never skip or delete a failing test. Other commands: `make fmt`, `
 
 AWS profile `sandbox`, region `eu-central-1`, both set by the dev container; log in with
 `make sso-login`. Use no other profile or region. Docker runs inside the dev container.
+Ask before the first call to a new Bedrock model: for third-party models it creates an AWS Marketplace
+subscription with its own charges.
 
 ## Development lifecycle
 
-- **Plan:** every change starts as `intent/<date>-<name>/intent.md` (skill `/intent`); see
-  `intent/README.md`. Features and non-trivial changes need a merged intent before design or code;
-  small fixes and dependency bumps don't.
-- **Design:** an accepted intent becomes `spec.md` next to it (skill `/spec`), applying the policy
-  skills `security-policy` and `ai-design-standards`. Build starts from a merged spec.
-- **Build:** sessions start in plan mode. The accepted plan is committed as `plan.md` next to the spec
-  (`intent/_plan-template.md`), citing requirement IDs. If the code departs from the plan, update
-  `plan.md` in the same commit. Before reporting done, run the `verifier` subagent.
-- **Test:** bugs are fixed test-first (skill `/bugfix`; tests are locked during the fix). Changes to
-  `CLAUDE.md` or `.claude/` are regression-tested by the agent evals in `evals/` (`make evals`).
-- **Deploy:** every PR is reviewed against `REVIEW.md` (`/pr-review` locally, `claude-review` in CI);
-  a human approves the merge. `.claude/hooks/approval-gate.sh` asks before guardrail or CI edits,
-  dependency changes and AWS resource changes, and blocks commits on `main` and non-sandbox AWS use.
-- **Maintain:** `maintain.yml` watches the CI failure rate against control bands (`maintain/`); a
-  3-sigma breach becomes an intent PR. Every fixed incident gets an eval.
+- **Plan:** non-trivial changes start as `intent/<date>-<name>/intent.md` (`/intent`, see
+  `intent/README.md`) and need a merged intent before design or code. Small fixes don't.
+- **Design:** an accepted intent becomes `spec.md` (`/spec`), applying the `security-policy` and
+  `ai-design-standards` skills. Build starts from a merged spec.
+- **Build:** sessions start in plan mode; the accepted plan is committed as `plan.md`, citing requirement
+  IDs, and updated in the same commit when the code departs from it. Run the `verifier` subagent before
+  reporting done.
+- **Test:** bugs are fixed test-first (`/bugfix`, tests locked during the fix). Changes to `CLAUDE.md`
+  or `.claude/` are regression-tested by `make evals`.
+- **Deploy:** PRs are reviewed against `REVIEW.md` (`/pr-review`, `claude-review` in CI); a human
+  approves the merge. `.claude/hooks/approval-gate.sh` enforces the gates.
+- **Maintain:** `maintain.yml` turns a control-band breach of the CI failure rate into an intent PR.
+  Every fixed incident gets an eval.
 
 ## Working rules
 
-- `make check typecheck test` passes before every commit; tests stay offline.
+- One branch per change, merged to `main` by PR. Commit with a GitHub noreply address.
 - Don't skip pre-commit hooks with `--no-verify`; fix the finding.
-- One branch per change, merged to `main` by PR.
-- Never push, deploy or destroy cloud resources without asking.
-- Don't add features beyond the agreed step without asking.
-- Say what was measured and what was assumed.
+- Never push, deploy or destroy cloud resources without asking. Don't add features beyond the agreed
+  step without asking.
+- Docs describe what the project does and how to use it. No personal details (people, employers,
+  machines, account IDs) in tracked files; private notes go in the git-ignored local files.
+- Keep `PROJECT_CONTEXT.md` (git-ignored) current when a step finishes, a decision is made or a session
+  ends: date, status, next step. Write it to be read without the code or the chat.
+- Say what was measured and what was assumed. PR descriptions state what changed and how it was
+  measured; add each measured result, dated, to Results in `PROJECT_CONTEXT.md`. Docs claim only
+  measured results.
 - When Claude makes the same mistake twice, add the correction under "Things Claude gets wrong".
 
 ## Things Claude gets wrong

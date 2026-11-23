@@ -15,7 +15,7 @@
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": { }
   },
   // Runs on the host before the build: creates the mounted folders (the container won't start without
-  // them) and wires in optional personal Claude notes from ~/.claude-base.
+  // them) and the git-ignored CLAUDE.local.md and PROJECT_CONTEXT.md from their templates.
   "initializeCommand": "sh .devcontainer/initialize.sh ${localWorkspaceFolderBasename}",
   "mounts": [
     // A dedicated AWS config folder on the host, not ~/.aws.
@@ -23,8 +23,6 @@
     "source=${localEnv:HOME}/.aws-sandbox,target=/home/vscode/.aws,type=bind",
     // Claude Code login, settings and history survive container rebuilds
     "source=${localEnv:HOME}/.claude-projects/${localWorkspaceFolderBasename},target=/home/vscode/.claude,type=bind",
-    // Personal Claude notes shared by every project, read-only (see initialize.sh)
-    "source=${localEnv:HOME}/.claude-base,target=/home/vscode/.claude-base,type=bind,readonly",
     // GitHub CLI login survives container rebuilds too
     "source=gh-config-${devcontainerId},target=/home/vscode/.config/gh,type=volume"
   ],

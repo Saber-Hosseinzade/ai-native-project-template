@@ -2,6 +2,6 @@
 
 # CLAUDE.local.md
 
-Local-only (git-ignored). Private notes for this project only; personal rules for every project go in ~/.claude-base/CLAUDE.md.
+Local-only (git-ignored). Private notes for this project only.
 
 - Project record: @PROJECT_CONTEXT.md
