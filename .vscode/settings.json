@@ -10,7 +10,9 @@
   "editor.formatOnSave": true,
   "notebook.formatOnSave.enabled": true,
 
-  // Ruff formats and sorts imports; line length matches pyproject.toml.
+  // Ruff formats and sorts imports; line length matches pyproject.toml. The editor uses the venv's
+  // ruff (pinned by uv.lock), so it never depends on the Python extension having loaded first.
+  "ruff.path": [ "/home/vscode/.venv/bin/ruff" ],
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.codeActionsOnSave": { "source.organizeImports.ruff": "explicit" },

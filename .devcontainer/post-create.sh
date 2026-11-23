@@ -9,8 +9,8 @@
 set -euo pipefail
 
 # Docker creates the config volumes as root, and ~/.config with them.
-sudo chown -R vscode:vscode /home/vscode/.claude /home/vscode/.config/gh
-sudo chown vscode:vscode /home/vscode/.config
+sudo chown -R vscode:vscode /home/vscode/.claude /home/vscode/.config/gh /home/vscode/.cache/pre-commit
+sudo chown vscode:vscode /home/vscode/.config /home/vscode/.cache
 
 # uv manages Python dependencies. Pinned, so a rebuild gets the same version.
 pip install -q --user uv==0.13.6
@@ -31,6 +31,6 @@ fi
 # personal email out of public history. Check before the first commit.
 if [ -z "$(git config --local user.email 2>/dev/null || true)" ]; then
   echo "NOTE: set the repo-local Git identity before committing:"
-  echo "  git config user.name  'Saber Hosseinzade'"
-  echo "  git config user.email '<id>+Saber-Hosseinzade@users.noreply.github.com'"
+  echo "  git config user.name  '<your name>'"
+  echo "  git config user.email '<id>+<username>@users.noreply.github.com'"
 fi

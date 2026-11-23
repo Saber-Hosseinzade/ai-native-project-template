@@ -8,6 +8,7 @@
       "Bash(make fmt)",
       "Bash(make typecheck)",
       "Bash(make check)",
+      "Bash(make check typecheck test)",
       "Bash(uv run pytest:*)",
       "Bash(uv run ruff:*)",
       "Bash(uv run mypy:*)",
@@ -39,6 +40,40 @@
       "Bash(terraform destroy:*)",
       "Bash(agentcore launch:*)",
       "Bash(agentcore destroy:*)"
+    ],
+    "defaultMode": "plan"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/approval-gate.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/tests-lock.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/python-lint.sh"
+          }
+        ]
+      }
     ]
   }
 }

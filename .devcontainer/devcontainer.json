@@ -14,7 +14,9 @@
     // Claude Code CLI + the VS Code extension (the feature adds both)
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": { }
   },
-  "initializeCommand": "mkdir -p \"$HOME/.claude-projects/${localWorkspaceFolderBasename}\"",
+  // Runs on the host before the build: creates the mounted folders (the container won't start without
+  // them) and the git-ignored PROJECT_CONTEXT.md from its template.
+  "initializeCommand": "sh .devcontainer/initialize.sh ${localWorkspaceFolderBasename}",
   "mounts": [
     // A dedicated AWS config folder on the host, not ~/.aws.
     // Only these credentials are visible inside the container.
@@ -22,7 +24,9 @@
     // Claude Code login, settings and history survive container rebuilds
     "source=${localEnv:HOME}/.claude-projects/${localWorkspaceFolderBasename},target=/home/vscode/.claude,type=bind",
     // GitHub CLI login survives container rebuilds too
-    "source=gh-config-${devcontainerId},target=/home/vscode/.config/gh,type=volume"
+    "source=gh-config-${devcontainerId},target=/home/vscode/.config/gh,type=volume",
+    // pre-commit hook environments: kept across rebuilds, so the first commit doesn't reinstall them
+    "source=pre-commit-cache-${devcontainerId},target=/home/vscode/.cache/pre-commit,type=volume"
   ],
 
   "containerEnv": {
@@ -38,7 +42,8 @@
   // Virtualenv outside the bind-mounted workspace, so a host .venv can't collide with it.
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "remoteEnv": {
-    "PATH": "/home/vscode/.venv/bin:${containerEnv:PATH}",
+    // ~/.local/bin holds uv (post-create.sh): VS Code extensions need it too, not just the shell.
+    "PATH": "/home/vscode/.venv/bin:/home/vscode/.local/bin:${containerEnv:PATH}",
     "VIRTUAL_ENV": "/home/vscode/.venv",
     "UV_PROJECT_ENVIRONMENT": "/home/vscode/.venv"
   },
