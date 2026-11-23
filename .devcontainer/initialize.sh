@@ -1,11 +1,10 @@
 #!/bin/sh
 # Runs on the host before the container is built (initializeCommand), from the workspace folder.
 # Usage: initialize.sh <workspace folder name>
-# Creates the folders the container mounts, and wires in optional personal Claude notes:
-#   ~/.claude-base/CLAUDE.md           personal rules for every project (imported at user level)
-#   ~/.claude-base/CLAUDE.local.md     starting CLAUDE.local.md for a new project
-#   ~/.claude-base/PROJECT_CONTEXT.md  starting project record for a new project
-# Existing files are never overwritten. With an empty ~/.claude-base nothing else happens.
+# Creates the folders the container mounts, and sets up the local-only Claude files:
+#   ~/.claude-base/CLAUDE.md   optional personal rules for every project (imported at user level)
+#   CLAUDE.local.md, PROJECT_CONTEXT.md   created from their *.template.md in the repo (git-ignored)
+# Existing files are never overwritten.
 set -eu
 
 name=$1
@@ -19,9 +18,9 @@ if [ ! -f "$claude_home/CLAUDE.md" ]; then
   printf '%s\n' "@~/.claude-base/CLAUDE.md" >"$claude_home/CLAUDE.md"
 fi
 
-# Per-project local files (git-ignored), created once from the personal templates.
-for file in CLAUDE.local.md PROJECT_CONTEXT.md; do
-  if [ ! -e "$file" ] && [ -f "$base/$file" ]; then
-    cp "$base/$file" "$file"
+# Per-project local files (git-ignored), created once from the templates committed in the repo.
+for file in CLAUDE.local PROJECT_CONTEXT; do
+  if [ ! -e "$file.md" ] && [ -f "$file.template.md" ]; then
+    cp "$file.template.md" "$file.md"
   fi
 done

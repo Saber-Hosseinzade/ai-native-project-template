@@ -78,14 +78,13 @@ Add dependencies with `uv add <package>`. `make help` lists every command.
 
 ### Personal Claude notes (optional)
 
-Put files in `~/.claude-base/` on the host to share them across projects. The dev container mounts the
-folder read-only and, on first open of a project:
+On first open, the dev container creates two git-ignored files from their committed templates:
+`CLAUDE.local.md` (private notes for this project) and `PROJECT_CONTEXT.md` (a status record that imports
+into Claude's context). Existing files are never overwritten.
 
-- imports `~/.claude-base/CLAUDE.md` as your user-level Claude instructions (one file for every project);
-- copies `~/.claude-base/CLAUDE.local.md` and `~/.claude-base/PROJECT_CONTEXT.md` into the project if
-  they don't exist yet. Both are git-ignored.
-
-With an empty folder, nothing happens.
+For rules you want in every project, write `~/.claude-base/CLAUDE.md` on the host. The folder is mounted
+read-only and imported as your user-level Claude instructions; keep it in a private repository to back
+it up. With no such file, nothing is imported.
 
 ## Limitations
 
