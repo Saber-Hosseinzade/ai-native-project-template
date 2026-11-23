@@ -42,6 +42,9 @@ AWS profile `sandbox`, region `eu-central-1`, both set by the dev container; log
   `plan.md` in the same commit. Before reporting done, run the `verifier` subagent.
 - **Test:** bugs are fixed test-first (skill `/bugfix`; tests are locked during the fix). Changes to
   `CLAUDE.md` or `.claude/` are regression-tested by the agent evals in `evals/` (`make evals`).
+- **Deploy:** every PR is reviewed against `REVIEW.md` (`/pr-review` locally, `claude-review` in CI);
+  a human approves the merge. `.claude/hooks/approval-gate.sh` asks before guardrail or CI edits,
+  dependency changes and AWS resource changes, and blocks commits on `main` and non-sandbox AWS use.
 
 ## Working rules
 
