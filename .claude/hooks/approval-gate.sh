@@ -28,7 +28,7 @@ case "$tool" in
     file=$("$jq" -r '.tool_input.file_path // empty' <<<"$input") || fail
     rel=${file#"$root"/}
     case "$rel" in
-      .claude/settings.json | .claude/hooks/* | .github/workflows/* | .pre-commit-config.yaml | .devcontainer/*)
+      .claude/settings.json | .claude/hooks/* | .github/workflows/* | .pre-commit-config.yaml | .devcontainer/* | maintain/bands.toml)
         decide ask "This edits a guardrail or CI file ($rel). Approve only if you asked for this change."
         ;;
     esac

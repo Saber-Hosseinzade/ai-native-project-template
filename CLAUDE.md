@@ -45,6 +45,8 @@ AWS profile `sandbox`, region `eu-central-1`, both set by the dev container; log
 - **Deploy:** every PR is reviewed against `REVIEW.md` (`/pr-review` locally, `claude-review` in CI);
   a human approves the merge. `.claude/hooks/approval-gate.sh` asks before guardrail or CI edits,
   dependency changes and AWS resource changes, and blocks commits on `main` and non-sandbox AWS use.
+- **Maintain:** `maintain.yml` watches the CI failure rate against control bands (`maintain/`); a
+  3-sigma breach becomes an intent PR. Every fixed incident gets an eval.
 
 ## Working rules
 
