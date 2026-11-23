@@ -24,7 +24,9 @@
     // Claude Code login, settings and history survive container rebuilds
     "source=${localEnv:HOME}/.claude-projects/${localWorkspaceFolderBasename},target=/home/vscode/.claude,type=bind",
     // GitHub CLI login survives container rebuilds too
-    "source=gh-config-${devcontainerId},target=/home/vscode/.config/gh,type=volume"
+    "source=gh-config-${devcontainerId},target=/home/vscode/.config/gh,type=volume",
+    // pre-commit hook environments: kept across rebuilds, so the first commit doesn't reinstall them
+    "source=pre-commit-cache-${devcontainerId},target=/home/vscode/.cache/pre-commit,type=volume"
   ],
 
   "containerEnv": {
