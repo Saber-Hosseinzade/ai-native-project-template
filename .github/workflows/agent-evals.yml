@@ -1,5 +1,6 @@
 # Agent evals: run evals/*.json against a change to the agent's configuration.
-# Needs the repository secret ANTHROPIC_API_KEY; without it the job is skipped with a notice.
+# Needs the repository secret CLAUDE_CODE_OAUTH_TOKEN (Claude subscription, from `claude setup-token`) or ANTHROPIC_API_KEY;
+# without it the job is skipped with a notice.
 # Each run costs tokens, so it runs only when the configuration changes, or on demand.
 
 name: agent-evals
@@ -38,11 +39,13 @@ jobs:
 
       - name: Run eval suite
         env:
+          # Either secret works; if both are set, Claude Code uses the API key.
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           DISABLE_TELEMETRY: "1"
         run: |
-          if [ -z "$ANTHROPIC_API_KEY" ]; then
-            echo "::notice::ANTHROPIC_API_KEY is not set; agent evals skipped."
+          if [ -z "$CLAUDE_CODE_OAUTH_TOKEN$ANTHROPIC_API_KEY" ]; then
+            echo "::notice::No Claude secret (CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY); agent evals skipped."
             exit 0
           fi
           git config --global user.name evals

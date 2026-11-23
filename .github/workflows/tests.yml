@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+      HAS_KEY: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' || secrets.ANTHROPIC_API_KEY != '' }}
     defaults:
       run:
         shell: bash  # bash -eo pipefail, so `| tee` keeps the exit code
@@ -54,11 +54,13 @@ jobs:
         run: uv run pytest -q -rs --cov --cov-report=term-missing 2>&1 | tee -a ci.log
 
       # Read-only judgement step: on failure, Claude reads the log and writes a triage note to the job
-      # summary. It cannot edit files or push. Skipped without the ANTHROPIC_API_KEY secret.
+      # summary. It cannot edit files or push. Skipped without a Claude secret.
       - name: Triage failure
         if: failure() && env.HAS_KEY == 'true'
         continue-on-error: true
         env:
+          # Either secret works; if both are set, Claude Code uses the API key.
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           DISABLE_TELEMETRY: "1"
         run: |

@@ -26,7 +26,8 @@ non-interactively, and `check.sh` grades what it left behind.
 
 - Locally: `make evals` (uses your Claude login; costs tokens).
 - CI: `.github/workflows/agent-evals.yml` on pull requests that change `CLAUDE.md`, `.claude/` or
-  `evals/`, and on demand. It needs the repository secret `ANTHROPIC_API_KEY`; without it the job is
+  `evals/`, and on demand. It needs the repository secret `CLAUDE_CODE_OAUTH_TOKEN` (your Claude subscription, from
+  `claude setup-token`) or `ANTHROPIC_API_KEY`; without either, the job is
   skipped with a notice.
 
 ## Grow the suite

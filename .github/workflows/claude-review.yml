@@ -1,6 +1,7 @@
 # Claude PR review: runs the REVIEW.md passes on every pull request to main and posts the findings
 # as a PR comment. Findings inform the human reviewer; branch protection still needs a human approval.
-# Needs the repository secret ANTHROPIC_API_KEY; without it the job is skipped with a notice.
+# Needs the repository secret CLAUDE_CODE_OAUTH_TOKEN (Claude subscription, from `claude setup-token`) or ANTHROPIC_API_KEY;
+# without it the job is skipped with a notice.
 
 name: claude-review
 
@@ -24,11 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+      HAS_KEY: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' || secrets.ANTHROPIC_API_KEY != '' }}
     steps:
-      - name: Check for API key
+      - name: Check for a Claude secret
         if: env.HAS_KEY != 'true'
-        run: echo "::notice::ANTHROPIC_API_KEY is not set; Claude review skipped."
+        run: echo "::notice::No Claude secret (CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY); Claude review skipped."
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         if: env.HAS_KEY == 'true'
@@ -39,6 +40,8 @@ jobs:
       - uses: anthropics/claude-code-action@acfe7992852970efb4fee683d63d628e3e52df67  # v1.0.286
         if: env.HAS_KEY == 'true'
         with:
+          # Either secret works: subscription token or API key.
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
             REPO: ${{ github.repository }}
