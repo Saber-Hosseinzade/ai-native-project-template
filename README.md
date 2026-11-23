@@ -1,4 +1,4 @@
-# repo-base-config
+# ai-native-project-template
 
 A starting point for Python projects that build AI agents, RAG or document AI on AWS, developed with
 Claude Code. It provides a reproducible dev container, strict tooling, and an AI-native development
