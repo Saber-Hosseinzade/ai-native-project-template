@@ -7,10 +7,14 @@ Context for AI coding assistants. Personal notes go in `CLAUDE.local.md` (git-ig
 A Python 3.12 project for AI agents, RAG or document AI on AWS. Code in `src/app/`, offline tests in
 `tests/`, local Postgres + pgvector in `compose.yaml` (`make db-up`).
 
-## Commands
+## Verifying your work
 
-`make test` (offline), `make typecheck` (mypy), `make check` (all pre-commit hooks), `make fmt`,
-`make db-up` (Postgres). Before reporting a change done: `make check typecheck test`.
+- `make check`: every pre-commit hook "Passed" or "Skipped"
+- `make typecheck`: "Success: no issues found"
+- `make test`: "N passed", nothing failed or skipped
+
+Run all three before reporting any task complete, and paste the output. If a test fails, fix the code,
+not the test; never skip or delete a failing test. Other commands: `make fmt`, `make db-up`, `make help`.
 
 ## Design rules
 
@@ -36,6 +40,8 @@ AWS profile `sandbox`, region `eu-central-1`, both set by the dev container; log
 - **Build:** sessions start in plan mode. The accepted plan is committed as `plan.md` next to the spec
   (`intent/_plan-template.md`), citing requirement IDs. If the code departs from the plan, update
   `plan.md` in the same commit. Before reporting done, run the `verifier` subagent.
+- **Test:** bugs are fixed test-first (skill `/bugfix`; tests are locked during the fix). Changes to
+  `CLAUDE.md` or `.claude/` are regression-tested by the agent evals in `evals/` (`make evals`).
 
 ## Working rules
 

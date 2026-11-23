@@ -40,3 +40,4 @@ data/
 CLAUDE.local.md
 .claude/settings.local.json
 .claude/worktrees/
+.claude/tests-locked

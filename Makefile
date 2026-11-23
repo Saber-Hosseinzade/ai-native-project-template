@@ -2,7 +2,7 @@
 
 PROFILE ?= sandbox
 
-.PHONY: help sso-login sso-whoami install hooks test cov lint fmt typecheck check db-up db-down
+.PHONY: help sso-login sso-whoami install hooks test cov lint fmt typecheck check evals tests-unlock db-up db-down
 
 help:  ## List the targets
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-12s %s\n", $$1, $$2}'
@@ -36,6 +36,12 @@ typecheck:  ## Check types with mypy
 
 check:  ## Run every pre-commit hook on all files (what CI runs)
 	uv run pre-commit run --all-files
+
+evals:  ## Run the agent eval suite (uses Claude; costs tokens)
+	evals/run.sh
+
+tests-unlock:  ## End a bug fix: allow Claude to edit tests/ again
+	rm -f .claude/tests-locked
 
 db-up:  ## Start Postgres + pgvector in Docker
 	docker compose up -d db
