@@ -27,7 +27,7 @@ for eval in "$work"/evals/*.json; do
     claude -p "$(jq -r '.prompt' "$eval")" \
       --permission-mode default \
       --allowedTools "$(jq -r --arg d "$default_tools" '.allowed_tools // $d' "$eval")" \
-      --output-format json >"$work/result.json"
+      --output-format json </dev/null >"$work/result.json"
     "$work/evals/check.sh" "$eval" "$work/result.json"
   ) || failed=$((failed + 1))
   git worktree remove --force "$run"
