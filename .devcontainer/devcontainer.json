@@ -40,7 +40,8 @@
   // Virtualenv outside the bind-mounted workspace, so a host .venv can't collide with it.
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "remoteEnv": {
-    "PATH": "/home/vscode/.venv/bin:${containerEnv:PATH}",
+    // ~/.local/bin holds uv (post-create.sh): VS Code extensions need it too, not just the shell.
+    "PATH": "/home/vscode/.venv/bin:/home/vscode/.local/bin:${containerEnv:PATH}",
     "VIRTUAL_ENV": "/home/vscode/.venv",
     "UV_PROJECT_ENVIRONMENT": "/home/vscode/.venv"
   },
