@@ -21,6 +21,12 @@ A Python 3.12 project for AI agents, RAG or document AI on AWS. Code in `src/app
 AWS profile `sandbox`, region `eu-central-1`, both set by the dev container; log in with
 `make sso-login`. Use no other profile or region. Docker runs inside the dev container.
 
+## Development lifecycle
+
+- **Plan:** every change starts as `intent/<date>-<name>/intent.md` (skill `/intent`); see
+  `intent/README.md`. Features and non-trivial changes need a merged intent before design or code;
+  small fixes and dependency bumps don't.
+
 ## Working rules
 
 - `make check typecheck test` passes before every commit; tests stay offline.
