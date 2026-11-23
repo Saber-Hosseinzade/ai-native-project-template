@@ -8,7 +8,7 @@
     { "name": "tests pass", "run": "make test" },
     { "name": "lint clean", "run": "make lint" },
     { "name": "types clean", "run": "make typecheck" },
-    { "name": "no line removed from existing tests", "run": "! git diff HEAD -- tests | grep '^-[^-]'" },
+    { "name": "no test weakened (assert or test removed, skip added)", "run": "! git diff HEAD -- tests | grep -E '^-\\s*(assert |def test_)|^\\+.*pytest\\.mark\\.skip'" },
     { "name": "setting in config.py", "run": "grep -qiE 'timeout.*: *int.*= *30' src/app/config.py" },
     { "name": "setting in .env.example (S2)", "run": "grep -qiE '^[A-Z_]*TIMEOUT[A-Z_]*=' .env.example" }
   ]
