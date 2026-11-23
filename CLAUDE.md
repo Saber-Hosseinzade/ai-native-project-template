@@ -26,6 +26,8 @@ AWS profile `sandbox`, region `eu-central-1`, both set by the dev container; log
 - **Plan:** every change starts as `intent/<date>-<name>/intent.md` (skill `/intent`); see
   `intent/README.md`. Features and non-trivial changes need a merged intent before design or code;
   small fixes and dependency bumps don't.
+- **Design:** an accepted intent becomes `spec.md` next to it (skill `/spec`), applying the policy
+  skills `security-policy` and `ai-design-standards`. Build starts from a merged spec.
 
 ## Working rules
 
