@@ -19,6 +19,6 @@ Local-only. Latest status of this repo, kept current by Claude Code and read fro
 
 ## Results
 
-Measured results only, dated; the source for CV and README claims. Details live in the PR or commit.
+Measured results only, dated; the source for README claims. Details live in the PR or commit.
 
 ## Open items
